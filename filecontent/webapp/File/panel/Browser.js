@@ -1321,14 +1321,16 @@ Ext4.define('File.panel.Browser', {
                 customProperties: extraColumnNames
             }),
             success: function(response, options){
-                console.error(response);
-                console.error(response.responseJSON);
-                console.error(response.responseText);
+                var msg = response;
+                if (response)
+                    msg += "\n" + response.responseJSON + "\n" + response.responseText;
                 LABKEY.Utils.getCallbackWrapper(function (data) {
+                    if (!data)
+                        Ext4.Msg.alert("Error", msg);
                     this.processCustomFileProperties(data.rows, extraColumnNames);
-                }, this)(response, options);
+                }/**, this*/)(response, options);
             },
-            failuree: function() {
+            failure: function() {
                 console.error("Unabble to attachCustomFileProperties")
             },
             scope: this
