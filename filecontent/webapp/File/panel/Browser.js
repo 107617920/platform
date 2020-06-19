@@ -1328,7 +1328,7 @@ Ext4.define('File.panel.Browser', {
                     if (!data)
                         Ext4.Msg.alert("Error", msg);
                     this.processCustomFileProperties(data.rows, extraColumnNames);
-                }/**, this*/)(response, options);
+                }, this)(response, options);
             },
             failure: function() {
                 console.error("Unabble to attachCustomFileProperties")
