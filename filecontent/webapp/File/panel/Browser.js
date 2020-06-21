@@ -1315,14 +1315,25 @@ Ext4.define('File.panel.Browser', {
         //Copied array so as not to be include name/Row Id in extra columns
         var extraColumnNames = this.getExtraColumnNames();
 
+        var me = this;
         // Formerly we did selectRows on Exp.Data here and asked for columns Run and Flag/Comment. But those were not used by the processing
         Ext4.Ajax.request({
             url: LABKEY.ActionURL.buildURL('fileContent', 'getCustomProperties.api', undefined, {
                 customProperties: extraColumnNames
             }),
-            success: LABKEY.Utils.getCallbackWrapper(function(data) {
-                this.processCustomFileProperties(data.rows, extraColumnNames);
-            }, this),
+            success: function(response, options){
+                var msg = response;
+                if (response)
+                    msg += "\n" + response.responseJSON + "\n" + response.responseText;
+                LABKEY.Utils.getCallbackWrapper(function (data) {
+                    if (!data)
+                        Ext4.Msg.alert("Error", msg);
+                    this.processCustomFileProperties(data.rows, extraColumnNames);
+                }, this)(response, options);
+            },
+            failure: function() {
+                console.error("Unable to attachCustomFileProperties")
+            },
             scope: this
         });
     },
