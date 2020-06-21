@@ -1320,19 +1320,9 @@ Ext4.define('File.panel.Browser', {
             url: LABKEY.ActionURL.buildURL('fileContent', 'getCustomProperties.api', undefined, {
                 customProperties: extraColumnNames
             }),
-            success: function(response, options){
-                var msg = response;
-                if (response)
-                    msg += "\n" + response.responseJSON + "\n" + response.responseText;
-                LABKEY.Utils.getCallbackWrapper(function (data) {
-                    if (!data)
-                        Ext4.Msg.alert("Error", msg);
-                    this.processCustomFileProperties(data.rows, extraColumnNames);
-                }, this)(response, options);
-            },
-            failure: function() {
-                console.error("Unabble to attachCustomFileProperties")
-            },
+            success: LABKEY.Utils.getCallbackWrapper(function(data) {
+                this.processCustomFileProperties(data.rows, extraColumnNames);
+            }, this),
             scope: this
         });
     },
