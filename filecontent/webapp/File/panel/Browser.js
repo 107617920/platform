@@ -1330,9 +1330,6 @@ Ext4.define('File.panel.Browser', {
                 }
                 this.processCustomFileProperties(data.rows, extraColumnNames);
             }, this),
-            failure: function() {
-                console.error("Unable to attachCustomFileProperties")
-            },
             scope: this
         });
     },
